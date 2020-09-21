@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  userName: {
+  username: {
     type: String,
     require: true,
   },
@@ -19,8 +19,8 @@ const userSchema = new Schema({
     require: true,
   },
 }, { timestamps: true });
-userSchema.index({ userName: 1, email: 1 });
-userSchema.index({ userName: 1 });
+userSchema.index({ username: 1, email: 1 });
+userSchema.index({ username: 1 });
 
 const User = mongoose.model('user', userSchema);
 
