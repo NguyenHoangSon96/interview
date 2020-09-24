@@ -6,9 +6,6 @@ const logger = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const indexRoute = require('./routes/indexRoute');
-const authentication = require('./routes/authenticationRoute');
-
 const app = express();
 require('dotenv').config();
 
@@ -31,8 +28,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/authentication', authentication);
-app.use('/', indexRoute);
+app.use('/public', require('./routes/publicRoute'));
+app.use('/private', require('./routes/privateRoute'));
+app.use('/', require('./routes/indexRoute.js'));
 
 app.use(function(req, res, next) {
   next(createError(404));
@@ -56,7 +54,8 @@ app.use(function(err, req, res, next) {
     status: err.status,
     message: err.status === 500 || err.status === undefined ? 'Internal server error' : err.message,
     error: err.error || {},
-  })
+  });
+  console.error(err)
   //res.render('err');
 });
 

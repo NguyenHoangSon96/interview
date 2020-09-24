@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const {deleteUserByUid, getUserByEmail} = require('../authentication/firebase');
 
 const { CONFIG_GROUP_BOOKING_EVENT, CONFIG_GROUP_BOOKING_STATUS, ROLE_ADMIN } = require('../constant/constant');
 const GlobalConfig = require('../models/GlobalConfig');
@@ -63,5 +64,23 @@ router.get('/initGlobalConfig', async function(req, res, next) {
     next(e)
   }
 });
+
+router.get('/get-user-by-email-firebase', async function (req, res, next) {
+  try {
+    const results = await getUserByEmail(req.query.email);
+    res.json({status: 'success', payload: results});
+  } catch (e) {
+    next(e);
+  }
+})
+
+router.get('/delete-user-by-uid-firebase', async function (req, res, next) {
+  try {
+    await deleteUserByUid(req.query.uid);
+    res.json({status: 'success'});
+  } catch (e) {
+    next(e);
+  }
+})
 
 module.exports = router;

@@ -1,9 +1,9 @@
 const User = require("../models/User");
-const {createUser} = require('../authentication/firebase');
 const { ROLE_USER, RESPONSE_STATUS_SUCCESS, RESPONSE_STATUS_FAIL } = require("../constant/constant");
 
-async function registerController(req, res, next) {
+async function getBooks(req, res, next) {
   try {
+    // return next(createError(400, 'Bad request', { error: errors.array() }));
     const { username, email, password } = req.body;
 
     const user = await User.findOne({username}).lean();
@@ -14,14 +14,8 @@ async function registerController(req, res, next) {
       });
     }
 
-    // Create user in Firebase
-    const userFirebase = await createUser(email, password);
-    console.log(userFirebase);
-
-    // Create user in Mongodb
     const newUser = new User({
       role: ROLE_USER,
-      firebaseUid: userFirebase.uid,
       username, email, password
     });
     await newUser.save();
@@ -37,5 +31,5 @@ async function registerController(req, res, next) {
 
 
 module.exports = {
-  registerController,
+  getBooks,
 }

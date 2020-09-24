@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const {getUsers} = require('../authentication/firebase');
 const {RESPONSE_STATUS_FAIL, RESPONSE_STATUS_SUCCESS} = require("../constant/constant");
 
 
@@ -12,6 +13,8 @@ async function loginController(req, res, next) {
         message: 'Username or password is incorect'
       })
     }
+
+    getUsers()
 
     return res.json({
       status: RESPONSE_STATUS_SUCCESS,

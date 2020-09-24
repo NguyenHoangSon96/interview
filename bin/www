@@ -2,7 +2,7 @@
 const app = require('../app');
 const debug = require('debug')('myapp:server');
 const http = require('http');
-
+const { initFirebase } = require('../authentication/firebase');
 const { connectDB } = require('../database/mongoDb');
 
 const port = normalizePort(process.env.PORT || '8081');
@@ -61,6 +61,7 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   connectDB().catch(err => console.error(err));
+  initFirebase();
 
   debug('Listening on ' + bind);
 }
