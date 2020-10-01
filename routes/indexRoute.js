@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const User = require("../models/User");
 const {deleteUserByUid, getUserByEmail} = require('../authentication/firebase');
 
 const { CONFIG_GROUP_BOOKING_EVENT, CONFIG_GROUP_BOOKING_STATUS, ROLE_ADMIN } = require('../constant/constant');
 const GlobalConfig = require('../models/GlobalConfig');
+
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -82,5 +84,35 @@ router.get('/delete-user-by-uid-firebase', async function (req, res, next) {
     next(e);
   }
 })
+
+router.get('/save-dump-user', async function (req, res, next) {
+  try {
+    for (let i = 0; i < 123; i++) {
+      const user = new User({
+        username: `username${i}`,
+        firebaseUid: `firebaseUid${i}`,
+        email: `email${i}`,
+        password: `password${i}`,
+        role: `role${i}`,
+      });
+      user.save();
+    }
+
+    res.json({status: 'success'});
+  } catch (e) {
+    next(e);
+  }
+})
+
+router.get('/remove-dump-user', async function (req, res, next) {
+  try {
+    await User.deleteMany({username: {$ne: 'sonnh'}});
+
+    res.json({status: 'success'});
+  } catch (e) {
+    next(e);
+  }
+})
+
 
 module.exports = router;

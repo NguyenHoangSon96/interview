@@ -6,7 +6,7 @@ async function registerController(req, res, next) {
   try {
     const { username, email, password } = req.body;
 
-    const user = await User.findOne({username}).lean();
+    const user = await User.findOne({username, email}).lean();
     if (user) {
       return res.json({
           status: RESPONSE_STATUS_FAIL,
