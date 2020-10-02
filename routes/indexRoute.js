@@ -93,7 +93,7 @@ router.get('/save-dump-user', async function (req, res, next) {
         firebaseUid: `firebaseUid${i}`,
         email: `email${i}`,
         password: `password${i}`,
-        role: `role${i}`,
+        role: `USER`,
       });
       user.save();
     }
