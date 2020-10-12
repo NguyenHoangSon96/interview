@@ -11,8 +11,8 @@ async function loginController(req, res, next) {
     try {
       const expiresIn = 60 * 60 * 24 * 5 * 1000;
       const sessionCookie = await admin.auth().createSessionCookie(idToken, {expiresIn});
-      res.cookie('session', sessionCookie, {maxAge: expiresIn, httpOnly: true}); // TODO Neu co secure: true thi client k luu session cookie ???
-      res.cookie('test', {name: 'son'}, {maxAge: expiresIn});
+      res.cookie('session', sessionCookie, {maxAge: expiresIn, httpOnly: true}); // TODO K su dụng option secure vì chưa chỉnh https
+      res.cookie('authenticated', true, {maxAge: expiresIn});
 
       const user = await User.findOne({ email, password });
       return res.json({

@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
+
 const {admin} = require('../authentication/firebase');
 const {RESPONSE_STATUS_FAIL, RESPONSE_STATUS_CODE_UNAUTHORIZED} = require('../constant/constant');
 
+const {logoutController} = require("../controllers/logoutController");
 const {getUsers} = require("../controllers/userController");
 
 router.get('/users', authentication,  getUsers);
+router.get('/logout', logoutController);
 
 async function authentication(req, res, next) {
     try {

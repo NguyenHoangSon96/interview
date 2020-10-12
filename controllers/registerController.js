@@ -1,10 +1,14 @@
 const User = require("../models/User");
+
 const {createUser} = require('../authentication/firebase');
 const { ROLE_USER, RESPONSE_STATUS_SUCCESS, RESPONSE_STATUS_FAIL } = require("../constant/constant");
+const {registerValidator} = require('../validator/registerValidator');
 
 async function registerController(req, res, next) {
   try {
     const { username, email, password } = req.body;
+    registerValidator(req.body, next);
+
 
     const user = await User.findOne({username, email}).lean();
     if (user) {

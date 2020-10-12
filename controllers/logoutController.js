@@ -1,13 +1,12 @@
-const createError = require('http-errors')
+const moment = require('moment');
 
+const {RESPONSE_STATUS_SUCCESS} = require("../constant/constant");
 
 async function logoutController(req, res, next) {
   try {
-      // return next(createError(400, 'Bad request', { error: errors.array() }));
-
-
-
-    res.send('');
+    res.clearCookie('session', {path: '/', httpOnly: true});
+    res.clearCookie('authenticated', {path: '/'});
+    res.json(RESPONSE_STATUS_SUCCESS);
   } catch (e) {
     next(e)
   }
