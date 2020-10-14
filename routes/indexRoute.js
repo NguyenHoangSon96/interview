@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 const {deleteUserByUid, getUserByEmail} = require('../authentication/firebase');
 
+const YoutubeService = require('../services/YoutubeService');
 const { CONFIG_GROUP_BOOKING_EVENT, CONFIG_GROUP_BOOKING_STATUS, ROLE_ADMIN } = require('../constant/constant');
 const GlobalConfig = require('../models/GlobalConfig');
 
@@ -109,6 +110,16 @@ router.get('/remove-dump-user', async function (req, res, next) {
     await User.deleteMany({username: {$ne: 'sonnh'}});
 
     res.json({status: 'success'});
+  } catch (e) {
+    next(e);
+  }
+})
+
+router.get('/test-youtube', async function (req, res, next) {
+  try {
+    const result = await YoutubeService.getCommentByVideoId();
+
+    res.json({status: 'success', data: result.data});
   } catch (e) {
     next(e);
   }

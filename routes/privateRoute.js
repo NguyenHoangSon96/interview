@@ -6,8 +6,12 @@ const {RESPONSE_STATUS_FAIL, RESPONSE_STATUS_CODE_UNAUTHORIZED} = require('../co
 
 const {logoutController} = require("../controllers/logoutController");
 const {getUsers} = require("../controllers/userController");
+const YoutubeController = require("../controllers/youtubeController");
 
 router.get('/users', authentication,  getUsers);
+
+router.get('/comments-by-video-id', authentication,  YoutubeController.getCommentsByVideoId);
+
 router.get('/logout', logoutController);
 
 async function authentication(req, res, next) {
@@ -15,7 +19,6 @@ async function authentication(req, res, next) {
         try {
             const sessionCookie = req.cookies.session || '';
             const decodedClaims = await admin.auth().verifySessionCookie( sessionCookie, true /** checkRevoked */);
-            console.log(decodedClaims)
             next()
         } catch (e) {
             res.json({
