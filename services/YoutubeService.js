@@ -7,28 +7,19 @@ const YoutubeService = {
         auth: process.env.YOUTUBE_API_KEY || ''
     }),
 
-    getCommentsByVideoId: async function (videoId) {
-        let results = [];
-
-        const comments = await Comment.find({videoId})
-                                      .sort({likeCount: -1})
-                                      .select('textOriginal textDisplay authorDisplayName likeCount authorProfileImageUrl commentPublishedAt commentUpdatedAt')
-                                      .lean();
-        if (comments && comments.length > 0) {
-            results = comments
-        } else {
-            await this.persitCommentsFromYoutube(videoId);
-            // TODO gui socket cho client khi xog
-        }
-        return results;
+    persistVideoFromYoutube: async function (videoId) {
+        const param = {id: videoId, part: 'snippet,contentDetails,statistics'}
+        const response = await this.youtube.videos.list(param);
+        const items = response.data.items;
+        console.log(items);
     },
 
-    persitCommentsFromYoutube: async function (videoId) {
+    persistCommentsFromYoutube: async function (videoId) {
         let nextPageToken;
 
         do {
-            const params = {part: 'snippet', maxResults: 100, pageToken:  nextPageToken ? nextPageToken : undefined, videoId,};
-            const response = await this.youtube.commentThreads.list(params);
+            const param = {part: 'snippet', maxResults: 100, pageToken:  nextPageToken ? nextPageToken : undefined, videoId,};
+            const response = await this.youtube.commentThreads.list(param);
             const items = response.data.items;
             if (!items) return;
             const comments = items.map(item => (

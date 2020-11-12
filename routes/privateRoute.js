@@ -10,7 +10,8 @@ const YoutubeController = require("../controllers/youtubeController");
 
 router.get('/users', authentication,  getUsers);
 
-router.get('/comments-by-video-id', authentication,  YoutubeController.getCommentsByVideoId);
+router.get('/persist-video-and-comments', authentication,  YoutubeController.persistVideoAndComments);
+router.get('/find-video-by-id', authentication,  YoutubeController.findVideoById);
 
 router.get('/logout', logoutController);
 

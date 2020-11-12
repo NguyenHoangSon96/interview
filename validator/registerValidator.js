@@ -3,13 +3,13 @@ const Joi = require('joi');
 const schema = Joi.object({
     username: Joi.string()
                  .alphanum()
-                 .min(6)
+                 .min(4)
                  .max(10)
                  .required(),
     email: Joi.string()
               .email({ tlds: { allow: ['com', 'net'] } }),
     password: Joi.string()
-                 .pattern(new RegExp('^[a-zA-Z0-9]{6,10}$')),
+                 .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$')),
 });
 
 function registerValidator(payload, next) {
